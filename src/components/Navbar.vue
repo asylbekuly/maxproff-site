@@ -67,7 +67,7 @@
             <li v-for="subItem in item.dropdown" :key="subItem" class="px-10 py-2 gap-5 transition">
               <a
                 href="#"
-                class="inline-block border border-transparent px-2 hover:border-green-500 rounded-md transition"
+                class="inline-block border border-transparent px-2 hover:border-primary rounded-md transition"
               >
                 {{ subItem }}
               </a>
