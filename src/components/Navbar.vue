@@ -44,6 +44,7 @@
           <button @click="toggleDropdown(item.key)" class="flex items-center">
             {{ item.name }}
             <svg
+              v-if="item.dropdown"
               class="pt-1"
               width="24"
               height="24"
@@ -60,6 +61,8 @@
               />
             </svg>
           </button>
+
+          <!-- Выпадающее меню -->
           <ul
             v-if="dropdowns[item.key]"
             class="absolute left-1/2 -translate-x-1/2 mt-2 w-[218px] rounded-lg shadow-md"
@@ -74,32 +77,28 @@
             </li>
           </ul>
         </div>
-
-        <a href="#" class="hover:text-hoverBlack">Дома и коттеджи</a>
-        <a href="#" class="hover:text-hoverBlack">Прочие услуги</a>
       </div>
     </div>
   </header>
 </template>
-  
 
 <script setup>
-import { ref } from 'vue'
-const dropdowns = ref({
-  apartments: false,
-  interior: false,
-  rooms: false
-})
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const toggleDropdown = (key) => {
-  dropdowns.value[key] = !dropdowns.value[key]
-}
+const navLinks = [
+  { name: 'Цены', href: '#' },
+  { name: 'Услуги', href: '#' },
+  { name: 'Портфолио', href: '#' },
+  { name: 'Акции', href: '#' },
+  { name: 'Преимущества', href: '#' },
+  { name: 'Блог', href: '#' },
+  { name: 'Контакты', href: '#' }
+]
 
-// Массив для меню
 const menuItems = [
   {
     name: 'Ремонт квартир',
-    key: 'apartments',
+    key: 'repair',
     dropdown: [
       'Черновой',
       'Косметический',
@@ -112,29 +111,55 @@ const menuItems = [
   },
   {
     name: 'Дизайн интерьера',
-    key: 'interior',
-    dropdown: ['Кухня', 'Гостиная']
+    key: 'design',
+    dropdown: [
+      'Дизайн кухни',
+      'Дизайн спальни',
+      'Дизайн гостиной',
+      'Дизайн детской',
+      'Дизайн санузла',
+      'Дизайн коридора',
+      'Дизайн балкона'
+    ]
   },
   {
     name: 'Ремонт комнат',
     key: 'rooms',
-    dropdown: ['Спальня', 'Ванная']
+    dropdown: ['Кухни', 'Спальни', 'Гостиная', 'Детские', 'Санузлы', 'Коридоры', 'Балконы']
+  },
+  {
+    name: 'Дома и коттеджи',
+    key: 'houses'
+  },
+  {
+    name: 'Прочие услуги',
+    key: 'other'
   }
 ]
 
-const navLinks = [
-  { name: 'Цены', href: '#' },
-  { name: 'Услуги', href: '#' },
-  { name: 'Портфолио', href: '#' },
-  { name: 'Акции', href: '#' },
-  { name: 'Преимущества', href: '#' },
-  { name: 'Блог', href: '#' },
-  { name: 'Контакты', href: '#' }
-]
+const dropdowns = ref({}) // Управляем состоянием выпадающих меню
+
+const dropdownRefs = ref(new Map()) // Ссылаемся на dropdown
+
+const toggleDropdown = (key) => {
+  dropdowns.value[key] = !dropdowns.value[key]
+}
+
+
 </script>
 
 <style scoped>
-button {
-  cursor: pointer;
+/* Анимации для плавного появления выпадающего меню */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
 }
 </style>
